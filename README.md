@@ -1,50 +1,117 @@
-# Accident Detection System
+# Automated Road Accident Detection and Emergency Response System
 
-**Last Updated: *7 June 2022***
+## Overview
+The **Automated Road Accident Detection and Emergency Response System** is a cutting-edge project designed to detect road accidents in real-time using YOLO (You Only Look Once) object detection and other advanced AI techniques. Upon detecting an accident, the system:
 
-1. Demonstration
-2. What is Accident Detection System?
-3. Prerequisites
-4. Getting Started- How to use it?
-5. Description
-6. Future Work
+1. **Sends Emergency Alerts**: Utilizes the Twilio API to send notifications and make calls to nearby hospitals.
+2. **Integrates Current Location**: Includes the accident's geographical location to guide emergency responders accurately.
+3. **Minimizes Response Time**: Ensures timely medical assistance by prioritizing hospitals based on proximity.
 
-## 1. Demonstration
+## Features
+- **Real-Time Accident Detection**: Implements YOLO for precise and quick detection of road accidents.
+- **Twilio API Integration**: Sends emergency alerts through SMS and calls.
+- **Location Integration**: Captures and sends the exact location of the accident using GPS.
+- **Scalable Backend**: Processes accident data and manages communications efficiently.
+- **User-Friendly Dashboard**: Visualizes data and system operations for easier monitoring.
 
-![Demo](https://user-images.githubusercontent.com/54409969/173066273-732f7da9-8645-4809-aa7a-bb2f78548b3e.gif)
+## Prerequisites
+- Python 3.8 or higher
+- Libraries: `yolov5`, `opencv-python`, `pandas`, `numpy`, `flask`, `requests`
+- Twilio Account with API credentials
+- Google Maps API for geolocation services
 
-## 2. What is Accident Detection System?
+## Installation
 
-An accident Detection System is designed to detect accidents via video or CCTV footage. Road accidents are a significant problem for the whole world. Many people lose their lives in road accidents. We can minimize this issue by using CCTV accident detection. This repository majorly explores how CCTV can detect these accidents with the help of Deep Learning.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/road-accident-detection.git
+   cd road-accident-detection
+   ```
 
-## 3. Prerequisites
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-- To use this project Python Version > 3.6 is recommended.
-- To contribute to this project, knowledge of basic python scripting, Machine Learning, and Deep Learning will help.
+3. Configure environment variables:
+   - Create a `.env` file in the project root directory.
+   - Add the following details:
+     ```env
+     TWILIO_ACCOUNT_SID=your_account_sid
+     TWILIO_AUTH_TOKEN=your_auth_token
+     TWILIO_PHONE_NUMBER=your_twilio_phone_number
+     GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+     ```
 
-## 4. Getting Started - How to use it?
+4. Start the application:
+   ```bash
+   python app.py
+   ```
 
-### Clone this repository
+## Twilio API Integration
+The Twilio API facilitates sending emergency notifications via SMS and phone calls. The process includes:
 
-`https://github.com/krishrustagi/Accident-Detection-System.git`
+1. **Setting Up Twilio**:
+   - Sign up for a [Twilio account](https://www.twilio.com/).
+   - Obtain your Account SID, Auth Token, and a verified phone number.
 
-To install all the packages required to run this python program
-`pip install -r requirements.txt`
+2. **Sending Alerts**:
+   - When an accident is detected, the system generates an alert that includes:
+     - A short message describing the incident.
+     - The accident's exact location as a Google Maps link.
 
-**Note:** This project requires a camera. So make sure you have a connected camera to your device. You can also use a downloaded video if not using a camera.
+   Example code snippet for sending alerts:
+   ```python
+   from twilio.rest import Client
 
-### Run
-Before running the program, you need to run the `accident-classification.ipynb` file which will create the `model_weights.h5` file. Then, to run this python program, you need to execute the `main.py` python file.
+   def send_emergency_alert(location):
+       client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 
-## 5. Description
+       message = client.messages.create(
+           body=f"Accident detected at {location}. Immediate assistance required!",
+           from_=TWILIO_PHONE_NUMBER,
+           to="recipient_phone_number"
+       )
 
-This program includes 4 things.
+       print(f"Alert sent: {message.sid}")
+   ```
 
-1. `data`: Kaggle dataset on [Accident Detection from CCTV footage](https://www.kaggle.com/code/mrcruise/accident-classification/data).
-2. `accident-classification.ipynb`: This is a jupyter notebook that generates a model to classify the above data. This file generates two important files `model.json` and `model_weights.h5`.
-3. `detection.py`: This file loads the Accident Detection system with the help of `model.json` and `model_weights.h5` files.
-4. `camera.py`: It packs the camera and executes the `detection.py` file on the video dividing it frame by frame and displaying the percentage of the prediction in the accident (if present) in the frame.
+## Location Integration
+- The system captures the current location of the accident using GPS.
+- The Google Maps API generates a shareable link for responders to access the exact location.
 
-## 6. Future Work
+Example code snippet for fetching location:
+```python
+import requests
 
-We can use an alarm system that can call the nearest police station in case of an accident and also alert them of the severity of the accident.
+def get_location():
+    response = requests.get('https://www.googleapis.com/geolocation/v1/geolocate?key=GOOGLE_MAPS_API_KEY')
+    location_data = response.json()
+    lat = location_data['location']['lat']
+    lng = location_data['location']['lng']
+    return f"https://maps.google.com/?q={lat},{lng}"
+```
+
+## Usage
+1. Run the application and ensure all APIs and detection models are configured.
+2. Monitor the dashboard for real-time accident detection.
+3. Emergency alerts will be triggered automatically when an accident is detected.
+
+## Project Structure
+- `models/`: Pre-trained YOLO model files
+- `scripts/`: Detection and alert scripts
+- `app.py`: Main application file
+- `templates/`: Frontend dashboard templates
+- `static/`: Static files (CSS, JS)
+
+## Contributions
+Contributions are welcome! Feel free to fork the repository and create a pull request with your improvements.
+
+## License
+This project is licensed under the MIT License. See the `LICENSE` file for details.
+
+## Contact
+For queries or feedback, reach out to:
+- **Email**: your-email@example.com
+- **GitHub**: [your-username](https://github.com/Vaibhav-Vijay31)
+
