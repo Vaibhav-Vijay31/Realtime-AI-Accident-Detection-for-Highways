@@ -112,6 +112,6 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 
 ## Contact
 For queries or feedback, reach out to:
-- **Email**: your-email@example.com
-- **GitHub**: [your-username](https://github.com/Vaibhav-Vijay31)
+- **Email**: vaibhavvijay31@gmail.com
+- **GitHub**: [Vaibhav-Vijay31](https://github.com/Vaibhav-Vijay31)
 
